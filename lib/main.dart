@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'components/share_dialog.dart';
 
 void main() {
   runApp(const MyApp());
@@ -56,62 +57,54 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+  @override
+  void initState() {
+    super.initState();
+    
+    // 页面加载时自动显示分享弹窗
+    Future.delayed(const Duration(milliseconds: 500), () {
+      ShareDialog.show(
+        context,
+        title: '分享到',
+        content: 'Flutter for OpenHarmony 分享示例',
+        link: 'https://example.com/flutter-harmony',
+        onShare: (platform) {
+          // 分享回调处理
+          print('分享到: $platform');
+        },
+      );
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            // const Text(
-            //   'You have pushed the button this many times:',
-            // ),
-            // Text(
-            //   '$_counter',
-            //   style: Theme.of(context).textTheme.headlineMedium,
-            // ),
+            const Text(
+              'Flutter for OpenHarmony 分享弹窗示例',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              '页面加载后会自动显示分享弹窗',
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.grey,
+              ),
+            ),
           ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _incrementCounter,
-      //   tooltip: 'Increment',
-      //   child: const Icon(Icons.add),
-      // ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
