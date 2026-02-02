@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:aa/components/full_screen_dialog.dart';
 
 void main() {
   runApp(const MyApp());
@@ -56,62 +57,77 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  // 控制全屏弹窗显示
+  bool _isDialogVisible = true;
 
-  void _incrementCounter() {
+  // 关闭弹窗
+  void _closeDialog() {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      _isDialogVisible = false;
+    });
+  }
+
+  // 重新显示弹窗
+  void _showDialog() {
+    setState(() {
+      _isDialogVisible = true;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            // const Text(
-            //   'You have pushed the button this many times:',
-            // ),
-            // Text(
-            //   '$_counter',
-            //   style: Theme.of(context).textTheme.headlineMedium,
-            // ),
-          ],
-        ),
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text(widget.title),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _incrementCounter,
-      //   tooltip: 'Increment',
-      //   child: const Icon(Icons.add),
-      // ), // This trailing comma makes auto-formatting nicer for build methods.
+      body: Stack(
+        children: [
+          // 首页内容
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                const Text(
+                  '首页内容',
+                  style: TextStyle(fontSize: 24),
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: _showDialog,
+                  child: const Text('重新显示弹窗'),
+                ),
+              ],
+            ),
+          ),
+          // 全屏弹窗
+          FullScreenDialog(
+            isVisible: _isDialogVisible,
+            onClose: _closeDialog,
+            content: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Text(
+                    '全屏弹窗内容',
+                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    '这是一个可复用的全屏弹窗组件',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  SizedBox(height: 40),
+                  Text(
+                    '点击右上角关闭按钮或背景区域关闭弹窗',
+                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
