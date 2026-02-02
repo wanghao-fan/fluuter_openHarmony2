@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 /// 分享平台类型枚举
 enum SharePlatform {
-  wechat,      // 微信
-  moments,     // 朋友圈
-  qq,          // QQ
-  qzone,       // QQ空间
-  weibo,       // 微博
-  copyLink,    // 复制链接
-  more,        // 更多
+  wechat, // 微信
+  moments, // 朋友圈
+  qq, // QQ
+  qzone, // QQ空间
+  weibo, // 微博
+  copyLink, // 复制链接
+  more, // 更多
 }
 
 /// 分享回调函数类型
@@ -21,8 +21,7 @@ class ShareDialog {
 
   /// 显示分享弹窗
   static void show(
-    BuildContext context,
-    {
+    BuildContext context, {
     String title = '分享到',
     String content = '',
     String link = '',
@@ -68,8 +67,7 @@ class ShareDialog {
 
   /// 构建分享弹窗
   static Widget _buildShareDialog(
-    BuildContext context,
-    {
+    BuildContext context, {
     required String title,
     required String content,
     required String link,
@@ -150,8 +148,9 @@ class ShareDialog {
             physics: const NeverScrollableScrollPhysics(),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 4,
-              mainAxisSpacing: 16,
-              crossAxisSpacing: 16,
+              mainAxisSpacing: 12,
+              crossAxisSpacing: 12,
+              childAspectRatio: 0.8,
             ),
             itemCount: platforms.length,
             itemBuilder: (context, index) {
@@ -184,6 +183,9 @@ class ShareDialog {
                       style: const TextStyle(
                         fontSize: 12,
                       ),
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                      maxLines: 1,
                     ),
                   ],
                 ),
