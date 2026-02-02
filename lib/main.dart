@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'components/snack_bar.dart';
 
 void main() {
   runApp(const MyApp());
@@ -56,62 +57,93 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  // 显示成功SnackBar
+  void _showSuccessSnackBar() {
+    CustomSnackBar.showSuccess(context, '操作成功！');
+  }
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+  // 显示错误SnackBar
+  void _showErrorSnackBar() {
+    CustomSnackBar.showError(context, '操作失败，请重试！');
+  }
+
+  // 显示警告SnackBar
+  void _showWarningSnackBar() {
+    CustomSnackBar.showWarning(context, '警告：请检查输入！');
+  }
+
+  // 显示信息SnackBar
+  void _showInfoSnackBar() {
+    CustomSnackBar.showInfo(context, '这是一条信息提示');
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // 页面加载时自动显示一条信息SnackBar
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      CustomSnackBar.showInfo(context, '欢迎使用SnackBar提示组件！');
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            // const Text(
-            //   'You have pushed the button this many times:',
-            // ),
-            // Text(
-            //   '$_counter',
-            //   style: Theme.of(context).textTheme.headlineMedium,
-            // ),
+            const Text(
+              'SnackBar提示组件演示',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 40),
+            // 成功提示按钮
+            ElevatedButton(
+              onPressed: _showSuccessSnackBar,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green,
+                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+              ),
+              child: const Text('显示成功提示', style: TextStyle(fontSize: 16)),
+            ),
+            const SizedBox(height: 16),
+            // 错误提示按钮
+            ElevatedButton(
+              onPressed: _showErrorSnackBar,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+              ),
+              child: const Text('显示错误提示', style: TextStyle(fontSize: 16)),
+            ),
+            const SizedBox(height: 16),
+            // 警告提示按钮
+            ElevatedButton(
+              onPressed: _showWarningSnackBar,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.orange,
+                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+              ),
+              child: const Text('显示警告提示', style: TextStyle(fontSize: 16)),
+            ),
+            const SizedBox(height: 16),
+            // 信息提示按钮
+            ElevatedButton(
+              onPressed: _showInfoSnackBar,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+              ),
+              child: const Text('显示信息提示', style: TextStyle(fontSize: 16)),
+            ),
           ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _incrementCounter,
-      //   tooltip: 'Increment',
-      //   child: const Icon(Icons.add),
-      // ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
