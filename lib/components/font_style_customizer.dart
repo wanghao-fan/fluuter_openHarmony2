@@ -1,73 +1,5 @@
-# Flutter for OpenHarmony 实战：字体样式定制
+import 'package:flutter/material.dart';
 
-# 前言：跨生态开发的新机遇
-在移动开发领域，我们总是面临着选择与适配。今天，你的Flutter应用在Android和iOS上跑得正欢，明天可能就需要考虑一个新的平台：HarmonyOS（鸿蒙）。这不是一道选答题，而是很多团队正在面对的现实。
-
-Flutter的优势很明确——写一套代码，就能在两个主要平台上运行，开发体验流畅。而鸿蒙代表的是下一个时代的互联生态，它不仅仅是手机系统，更着眼于未来全场景的体验。将现有的Flutter应用适配到鸿蒙，听起来像是一个“跨界”任务，但它本质上是一次有价值的技术拓展：让产品触达更多用户，也让技术栈覆盖更广。
-
-不过，这条路走起来并不像听起来那么简单。Flutter和鸿蒙，从底层的架构到上层的工具链，都有着各自的设计逻辑。会遇到一些具体的问题：代码如何组织？原有的功能在鸿蒙上如何实现？那些平台特有的能力该怎么调用？更实际的是，从编译打包到上架部署，整个流程都需要重新摸索。
-这篇文章想做的，就是把这些我们趟过的路、踩过的坑，清晰地摊开给你看。我们不会只停留在“怎么做”，还会聊到“为什么得这么做”，以及“如果出了问题该往哪想”。这更像是一份实战笔记，源自真实的项目经验，聚焦于那些真正卡住过我们的环节。
-
-无论你是在为一个成熟产品寻找新的落地平台，还是从一开始就希望构建能面向多端的应用，这里的思路和解决方案都能提供直接的参考。理解了两套体系之间的异同，掌握了关键的衔接技术，不仅能完成这次迁移，更能积累起应对未来技术变化的能力。
-
-# 混合工程结构深度解析
-
-项目目录架构
-
-当Flutter项目集成鸿蒙支持后，典型的项目结构会发生显著变化。以下是经过ohos_flutter插件初始化后的项目结构：
-```
-my_flutter_harmony_app/
-├── lib/                          # Flutter业务代码（基本不变）
-│   ├── main.dart                 # 应用入口
-│   ├── home_page.dart           # 首页
-│   └── utils/
-│       └── platform_utils.dart  # 平台工具类
-├── pubspec.yaml                  # Flutter依赖配置
-├── ohos/                         # 鸿蒙原生层（核心适配区）
-│   ├── entry/                    # 主模块
-│   │   └── src/main/
-│   │       ├── ets/              # ArkTS代码
-│   │       │   ├── MainAbility/
-│   │       │   │   ├── MainAbility.ts       # 主Ability
-│   │       │   │   └── MainAbilityContext.ts
-│   │       │   └── pages/
-│   │       │       ├── Index.ets           # 主页面
-│   │       │       └── Splash.ets          # 启动页
-│   │       ├── resources/        # 鸿蒙资源文件
-│   │       │   ├── base/
-│   │       │   │   ├── element/  # 字符串等
-│   │       │   │   ├── media/    # 图片资源
-│   │       │   │   └── profile/  # 配置文件
-│   │       │   └── en_US/        # 英文资源
-│   │       └── config.json       # 应用核心配置
-│   ├── ohos_test/               # 测试模块
-│   ├── build-profile.json5      # 构建配置
-│   └── oh-package.json5         # 鸿蒙依赖管理
-└── README.md
-```
-# 展示效果图片
-
-flutter 实时预览 效果展示
-
-运行到鸿蒙虚拟设备中效果展示
-
-# 目录
-
-- [功能代码实现](#功能代码实现)
-  - [字体样式定制组件开发](#字体样式定制组件开发)
-  - [应用入口配置](#应用入口配置)
-- [本次开发中容易遇到的问题](#本次开发中容易遇到的问题)
-- [总结本次开发中用到的技术点](#总结本次开发中用到的技术点)
-
-# 功能代码实现
-
-## 字体样式定制组件开发
-
-### 核心数据模型
-
-首先，我们创建了一个 `FontStyleModel` 数据类，用于管理字体的各种样式属性：
-
-```dart
 // 字体样式模型
 class FontStyleModel {
   final double fontSize;
@@ -96,20 +28,7 @@ class FontStyleModel {
     );
   }
 }
-```
 
-这个模型类包含了字体的大小、粗细、样式和颜色四个核心属性，并提供了 `copyWith` 方法用于便捷地更新单个属性。
-
-### 组件实现
-
-`FontStyleCustomizer` 组件是本次开发的核心，它实现了以下功能：
-
-1. **实时预览**：用户调整字体参数时，立即看到效果变化
-2. **多维度调整**：支持字体大小、粗细、样式和颜色的调整
-3. **直观控制**：提供按钮和滑块等多种交互方式
-4. **信息展示**：显示当前字体样式的详细信息
-
-```dart
 // 字体样式定制组件
 class FontStyleCustomizer extends StatefulWidget {
   const FontStyleCustomizer({Key? key}) : super(key: key);
@@ -134,7 +53,7 @@ class _FontStyleCustomizerState extends State<FontStyleCustomizer> {
   final List<Map<String, dynamic>> _fontWeightOptions = [
     {'name': '细体', 'weight': FontWeight.w300},
     {'name': '正常', 'weight': FontWeight.normal},
-    {'name': 'medium', 'weight': FontWeight.w500},
+    {'name': ' medium', 'weight': FontWeight.w500},
     {'name': '粗体', 'weight': FontWeight.bold},
   ];
 
@@ -575,7 +494,7 @@ class _FontStyleCustomizerState extends State<FontStyleCustomizer> {
       case FontWeight.normal:
         return '正常';
       case FontWeight.w500:
-        return 'medium';
+        return ' medium';
       case FontWeight.bold:
         return '粗体';
       default:
@@ -595,174 +514,3 @@ class _FontStyleCustomizerState extends State<FontStyleCustomizer> {
     return '自定义';
   }
 }
-```
-
-### 应用入口配置
-
-在 `main.dart` 文件中，我们配置了应用入口并直接使用了 `FontStyleCustomizer` 组件：
-
-```dart
-import 'package:flutter/material.dart';
-import 'components/font_style_customizer.dart';
-
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter for OpenHarmony',
-      debugShowCheckedModeBanner: false,
-      home: const MyHomePage(),
-    );
-  }
-}
-
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: FontStyleCustomizer(),
-    );
-  }
-}
-```
-
-### 使用方法
-
-1. **组件集成**：在需要展示字体样式定制功能的页面中，直接引入并使用 `FontStyleCustomizer` 组件即可。
-
-2. **实时预览**：运行应用后，可以通过调整页面上的各种控件来实时预览字体样式的变化效果：
-   - 点击字体大小按钮或拖动滑块调整字体大小
-   - 点击字体粗细按钮切换不同的字重
-   - 点击字体样式按钮切换正常/斜体
-   - 点击颜色块切换字体颜色
-
-3. **样式信息**：页面底部会实时显示当前字体的详细样式信息，包括大小、粗细、样式和颜色。
-
-### 开发注意事项
-
-1. **布局适配**：使用 `SingleChildScrollView` 确保在不同屏幕尺寸下都能完整显示所有控件。
-
-2. **状态管理**：采用 `setState` 进行状态管理，适合这种局部状态变化的场景，实现简单直观。
-
-3. **用户体验**：
-   - 提供多种交互方式（按钮和滑块）满足不同用户习惯
-   - 实时预览效果，增强用户反馈
-   - 清晰的视觉层次和分组，提高界面可读性
-
-4. **代码组织**：
-   - 将字体样式相关的逻辑封装在 `FontStyleModel` 中，提高代码复用性
-   - 分离 UI 构建和业务逻辑，使代码结构更清晰
-
-## 本次开发中容易遇到的问题
-
-### 1. 字体大小调整范围问题
-
-**问题**：设置的字体大小范围过小或过大，导致预览效果不明显或显示异常。
-
-**解决方案**：
-- 合理设置字体大小范围（如 12px-36px），覆盖常用字体大小
-- 使用 `Slider` 组件提供连续调整，同时使用按钮提供常用固定值
-- 在预览区域使用不同大小的文本，确保效果明显
-
-### 2. 字体粗细选项不完整
-
-**问题**：仅提供有限的字体粗细选项，无法满足多样化需求。
-
-**解决方案**：
-- 提供常用的字体粗细级别（细体、正常、medium、粗体）
-- 对应 Flutter 中的 `FontWeight` 枚举值，确保实际效果与选项一致
-- 在样式信息中显示当前选中的字体粗细名称，提高用户感知
-
-### 3. 颜色选择器交互不友好
-
-**问题**：颜色选择方式不够直观，用户难以快速找到想要的颜色。
-
-**解决方案**：
-- 使用色块形式展示常用颜色选项
-- 为选中的颜色添加明显的边框指示
-- 选择颜色后立即更新预览效果，提供即时反馈
-
-### 4. 状态管理混乱
-
-**问题**：多个字体属性的状态管理分散，导致代码难以维护。
-
-**解决方案**：
-- 使用 `FontStyleModel` 数据类统一管理所有字体样式属性
-- 使用 `copyWith` 方法实现属性的不可变更新，避免状态混乱
-- 将状态更新逻辑封装为独立方法，提高代码可读性
-
-### 5. 预览效果不明显
-
-**问题**：预览文本内容或布局不合理，导致字体样式变化不明显。
-
-**解决方案**：
-- 使用具有代表性的预览文本，包含不同长度的内容
-- 调整预览区域的背景色和边框，增强文本与背景的对比度
-- 同时显示主标题和副标题，展示不同字体大小的效果
-
-## 总结本次开发中用到的技术点
-
-### 1. Flutter 核心组件
-- **StatelessWidget/StatefulWidget**：构建应用界面的基础组件
-- **Container**：提供布局和装饰功能
-- **Column/Wrap**：实现灵活的垂直和流式布局
-- **ElevatedButton**：创建交互式按钮
-- **Slider**：实现连续值的调整
-- **GestureDetector**：处理手势交互
-- **SingleChildScrollView**：确保内容在小屏幕上可滚动
-
-### 2. 字体样式管理
-- **TextStyle**：定义文本的样式属性
-- **FontWeight**：控制字体粗细
-- **FontStyle**：控制字体样式（正常/斜体）
-- **Color**：控制字体颜色
-
-### 3. 状态管理
-- **setState**：更新组件状态并触发重建
-- **不可变数据模式**：使用 `copyWith` 方法更新状态，避免直接修改
-
-### 4. 数据模型设计
-- **FontStyleModel**：封装字体样式的所有属性，提供统一的状态管理
-- **枚举和常量**：定义字体大小、粗细、样式和颜色的可选值
-
-### 5. UI 设计与用户体验
-- **视觉层次**：通过颜色、间距和边框创建清晰的界面层次
-- **即时反馈**：调整参数后立即更新预览效果
-- **多交互方式**：同时提供按钮和滑块两种交互方式
-- **响应式布局**：适应不同屏幕尺寸
-
-### 6. 代码组织与封装
-- **组件化开发**：将字体样式定制功能封装为独立组件
-- **方法封装**：将状态更新逻辑封装为独立方法
-- **工具方法**：实现辅助功能，如获取字体粗细名称和颜色名称
-
-### 7. 应用配置
-- **MaterialApp**：配置应用的基本属性
-- **Scaffold**：提供应用的基本布局结构
-- **路由管理**：直接设置主页为 `FontStyleCustomizer` 组件
-
-### 8. 样式与主题
-- **BoxDecoration**：创建带背景色、边框和圆角的容器
-- **阴影效果**：使用 `BoxShadow` 增强界面的层次感
-- **颜色透明度**：使用 `withOpacity` 创建半透明效果
-
-### 9. 资源管理
-- **颜色资源**：定义常用颜色选项
-- **间距规范**：统一使用常量定义间距，保持界面一致性
-
-### 10. 跨平台兼容性
-- **Flutter 跨平台特性**：代码可在 Android、iOS 和 HarmonyOS 上运行
-- **平台无关的 UI 组件**：使用 Flutter 内置组件，确保在不同平台上的一致性
-
-通过本次开发，我们实现了一个功能完整、交互友好的字体样式定制功能，展示了 Flutter for OpenHarmony 的开发能力。该功能不仅可以直接应用于实际项目中，也可以作为学习 Flutter 组件开发和状态管理的参考案例。
-
-
-欢迎加入开源鸿蒙跨平台社区： https://openharmonycrossplatform.csdn.net
