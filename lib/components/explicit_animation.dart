@@ -8,45 +8,46 @@ class ExplicitAnimation extends StatefulWidget {
   State<ExplicitAnimation> createState() => _ExplicitAnimationState();
 }
 
-class _ExplicitAnimationState extends State<ExplicitAnimation> with SingleTickerProviderStateMixin {
+class _ExplicitAnimationState extends State<ExplicitAnimation>
+    with SingleTickerProviderStateMixin {
   // 动画控制器
   late AnimationController _controller;
-  
+
   // 淡入淡出动画
   late Animation<double> _fadeAnimation;
-  
+
   // 缩放动画
   late Animation<double> _scaleAnimation;
-  
+
   // 平移动画
   late Animation<Offset> _translateAnimation;
-  
+
   // 旋转动画
   late Animation<double> _rotateAnimation;
-  
+
   // 组合动画状态
   bool _isAnimating = false;
 
   @override
   void initState() {
     super.initState();
-    
+
     // 初始化动画控制器，时长2秒
     _controller = AnimationController(
       duration: const Duration(seconds: 2),
       vsync: this,
     );
-    
+
     // 初始化淡入淡出动画
     _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
-    
+
     // 初始化缩放动画
     _scaleAnimation = Tween<double>(begin: 0.5, end: 1.5).animate(
       CurvedAnimation(parent: _controller, curve: Curves.bounceOut),
     );
-    
+
     // 初始化平移动画
     _translateAnimation = Tween<Offset>(
       begin: const Offset(-1.0, 0.0),
@@ -54,12 +55,12 @@ class _ExplicitAnimationState extends State<ExplicitAnimation> with SingleTicker
     ).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeOut),
     );
-    
+
     // 初始化旋转动画
     _rotateAnimation = Tween<double>(begin: 0.0, end: 2 * 3.14159).animate(
       CurvedAnimation(parent: _controller, curve: Curves.linear),
     );
-    
+
     // 启动动画
     _startAnimation();
   }
@@ -69,7 +70,7 @@ class _ExplicitAnimationState extends State<ExplicitAnimation> with SingleTicker
     setState(() {
       _isAnimating = true;
     });
-    
+
     // 重复执行动画
     _controller.repeat(reverse: true);
   }
@@ -89,8 +90,7 @@ class _ExplicitAnimationState extends State<ExplicitAnimation> with SingleTicker
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        child: ListView(
           children: [
             // 动画效果说明
             Container(
@@ -112,7 +112,9 @@ class _ExplicitAnimationState extends State<ExplicitAnimation> with SingleTicker
                 ],
               ),
             ),
-            
+
+            const SizedBox(height: 20),
+
             // 1. 淡入淡出动画
             Container(
               height: 100,
@@ -134,7 +136,9 @@ class _ExplicitAnimationState extends State<ExplicitAnimation> with SingleTicker
                 ),
               ),
             ),
-            
+
+            const SizedBox(height: 20),
+
             // 2. 缩放动画
             Container(
               height: 100,
@@ -156,7 +160,9 @@ class _ExplicitAnimationState extends State<ExplicitAnimation> with SingleTicker
                 ),
               ),
             ),
-            
+
+            const SizedBox(height: 20),
+
             // 3. 平移动画
             Container(
               height: 100,
@@ -178,7 +184,9 @@ class _ExplicitAnimationState extends State<ExplicitAnimation> with SingleTicker
                 ),
               ),
             ),
-            
+
+            const SizedBox(height: 20),
+
             // 4. 旋转动画
             Container(
               height: 100,
@@ -200,7 +208,9 @@ class _ExplicitAnimationState extends State<ExplicitAnimation> with SingleTicker
                 ),
               ),
             ),
-            
+
+            const SizedBox(height: 20),
+
             // 5. 组合动画
             Container(
               height: 100,
