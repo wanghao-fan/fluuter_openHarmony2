@@ -1,6 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:aa/components/full_screen_dialog.dart';
 
+/// 功能特点列表项组件
+class FeatureItem extends StatelessWidget {
+  final IconData icon;
+  final String text;
+
+  const FeatureItem({super.key, required this.icon, required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Icon(
+          icon,
+          color: Colors.deepPurple,
+          size: 20,
+        ),
+        const SizedBox(width: 12),
+        Text(
+          text,
+          style: const TextStyle(fontSize: 16),
+        ),
+      ],
+    );
+  }
+}
+
 void main() {
   runApp(const MyApp());
 }
@@ -104,23 +130,130 @@ class _MyHomePageState extends State<MyHomePage> {
           FullScreenDialog(
             isVisible: _isDialogVisible,
             onClose: _closeDialog,
-            content: Center(
+            content: SingleChildScrollView(
+              padding: const EdgeInsets.all(24),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Text(
-                    '全屏弹窗内容',
+                children: [
+                  // 标题部分
+                  const Text(
+                    '欢迎使用',
                     style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 20),
-                  Text(
-                    '这是一个可复用的全屏弹窗组件',
-                    style: TextStyle(fontSize: 18),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'Flutter for OpenHarmony',
+                    style: TextStyle(fontSize: 24, color: Colors.deepPurple),
                   ),
-                  SizedBox(height: 40),
-                  Text(
+                  const SizedBox(height: 40),
+
+                  // 图片部分
+                  Container(
+                    width: 200,
+                    height: 200,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(100),
+                      color: Colors.deepPurple.withOpacity(0.1),
+                    ),
+                    child: Center(
+                      child: Icon(
+                        Icons.flutter_dash,
+                        size: 120,
+                        color: Colors.deepPurple,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 40),
+
+                  // 功能介绍卡片
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[50],
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.2),
+                          spreadRadius: 0,
+                          blurRadius: 10,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        Text(
+                          '功能特点',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(height: 16),
+                        FeatureItem(
+                          icon: Icons.check_circle,
+                          text: '可复用的全屏弹窗组件',
+                        ),
+                        SizedBox(height: 12),
+                        FeatureItem(
+                          icon: Icons.check_circle,
+                          text: '流畅的动画过渡效果',
+                        ),
+                        SizedBox(height: 12),
+                        FeatureItem(
+                          icon: Icons.check_circle,
+                          text: '响应式布局设计',
+                        ),
+                        SizedBox(height: 12),
+                        FeatureItem(
+                          icon: Icons.check_circle,
+                          text: '易于集成和自定义',
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 40),
+
+                  // 操作按钮
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      OutlinedButton(
+                        onPressed: _closeDialog,
+                        style: OutlinedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 32, vertical: 12),
+                          side: const BorderSide(color: Colors.deepPurple),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(24),
+                          ),
+                        ),
+                        child: const Text('稍后再说',
+                            style: TextStyle(color: Colors.deepPurple)),
+                      ),
+                      const SizedBox(width: 20),
+                      ElevatedButton(
+                        onPressed: () {
+                          print('开始使用');
+                          _closeDialog();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 32, vertical: 12),
+                          backgroundColor: Colors.deepPurple,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(24),
+                          ),
+                        ),
+                        child: const Text('开始使用'),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 40),
+
+                  // 底部提示
+                  const Text(
                     '点击右上角关闭按钮或背景区域关闭弹窗',
-                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                    style: TextStyle(fontSize: 14, color: Colors.grey),
                   ),
                 ],
               ),
