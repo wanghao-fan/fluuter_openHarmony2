@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:aa/components/line_chart.dart';
 
 void main() {
   runApp(const MyApp());
@@ -56,62 +57,82 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  late List<LineChartDataModel> _lineData;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  @override
+  void initState() {
+    super.initState();
+    _initLineData();
+  }
+
+  void _initLineData() {
+    // Generate sample dates for the last 7 days
+    final dates = List<DateTime>.generate(
+      7,
+      (i) => DateTime.now().subtract(Duration(days: 6 - i)),
+    );
+
+    // Create sample data sets
+    _lineData = [
+      LineChartDataModel(
+        dates: dates,
+        values: [12, 19, 13, 15, 20, 25, 22],
+        label: '数据集1',
+        color: Colors.blue,
+      ),
+      LineChartDataModel(
+        dates: dates,
+        values: [10, 15, 18, 12, 16, 19, 21],
+        label: '数据集2',
+        color: Colors.green,
+      ),
+      LineChartDataModel(
+        dates: dates,
+        values: [5, 8, 12, 10, 14, 17, 15],
+        label: '数据集3',
+        color: Colors.red,
+      ),
+    ];
+  }
+
+  void _onLinePointClick(int index, double value, DateTime date) {
+    // Handle line chart point click
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('点击了点 $index: 值 $value, 日期 ${date.month}/${date.day}'),
+        duration: const Duration(seconds: 2),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            // const Text(
-            //   'You have pushed the button this many times:',
-            // ),
-            // Text(
-            //   '$_counter',
-            //   style: Theme.of(context).textTheme.headlineMedium,
-            // ),
+            const Text(
+              '折线图展示',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 16),
+            Expanded(
+              child: CustomLineChart(
+                data: _lineData,
+                title: '多数据集折线图',
+                onPointClick: _onLinePointClick,
+              ),
+            ),
           ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _incrementCounter,
-      //   tooltip: 'Increment',
-      //   child: const Icon(Icons.add),
-      // ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
