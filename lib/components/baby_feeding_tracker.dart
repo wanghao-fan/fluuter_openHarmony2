@@ -58,10 +58,14 @@ class _BabyFeedingTrackerState extends State<BabyFeedingTracker> {
       margin: const EdgeInsets.symmetric(vertical: 8),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: record.type == RecordType.feeding ? Colors.blue.shade50 : Colors.green.shade50,
+        color: record.type == RecordType.feeding
+            ? Colors.blue.shade50
+            : Colors.green.shade50,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: record.type == RecordType.feeding ? Colors.blue.shade200 : Colors.green.shade200,
+          color: record.type == RecordType.feeding
+              ? Colors.blue.shade200
+              : Colors.green.shade200,
           width: 1,
         ),
       ),
@@ -77,7 +81,9 @@ class _BabyFeedingTrackerState extends State<BabyFeedingTracker> {
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: record.type == RecordType.feeding ? Colors.blue : Colors.green,
+                    color: record.type == RecordType.feeding
+                        ? Colors.blue
+                        : Colors.green,
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -128,98 +134,115 @@ class _BabyFeedingTrackerState extends State<BabyFeedingTracker> {
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // 标题
-          Text(
-            '婴儿喂养记录',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: Colors.deepPurple,
-            ),
-          ),
-          const SizedBox(height: 24),
-
-          // 备注输入
-          TextField(
-            controller: _notesController,
-            decoration: InputDecoration(
-              labelText: '备注 (可选)',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // 标题
+            Text(
+              '婴儿喂养记录',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.deepPurple,
               ),
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             ),
-          ),
-          const SizedBox(height: 24),
+            const SizedBox(height: 24),
 
-          // 操作按钮
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ElevatedButton(
-                onPressed: () => _addRecord(RecordType.feeding),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+            // 备注输入
+            TextField(
+              controller: _notesController,
+              decoration: InputDecoration(
+                labelText: '备注 (可选)',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              ),
+            ),
+            const SizedBox(height: 24),
+
+            // 操作按钮
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Flexible(
+                  flex: 1,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: ElevatedButton(
+                      onPressed: () => _addRecord(RecordType.feeding),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: const Text(
+                        '记录喂奶',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
                   ),
                 ),
-                child: const Text(
-                  '记录喂奶',
-                  style: TextStyle(fontSize: 16),
-                ),
-              ),
-              ElevatedButton(
-                onPressed: () => _addRecord(RecordType.diaper),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                Flexible(
+                  flex: 1,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: ElevatedButton(
+                      onPressed: () => _addRecord(RecordType.diaper),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: const Text(
+                        '记录换尿布',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
                   ),
                 ),
-                child: const Text(
-                  '记录换尿布',
-                  style: TextStyle(fontSize: 16),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 32),
+              ],
+            ),
+            const SizedBox(height: 32),
 
-          // 记录列表
-          Text(
-            '记录历史',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.deepPurple,
-            ),
-          ),
-          const SizedBox(height: 16),
-          if (_records.isEmpty)
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 40),
-              alignment: Alignment.center,
-              child: Text(
-                '暂无记录',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey.shade500,
-                ),
+            // 记录列表
+            Text(
+              '记录历史',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.deepPurple,
               ),
-            )
-          else
-            Column(
-              children: _records.reversed.map((record) => _buildRecordItem(record)).toList(),
             ),
-        ],
+            const SizedBox(height: 16),
+            if (_records.isEmpty)
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 40),
+                alignment: Alignment.center,
+                child: Text(
+                  '暂无记录',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.grey.shade500,
+                  ),
+                ),
+              )
+            else
+              Column(
+                children: _records.reversed
+                    .map((record) => _buildRecordItem(record))
+                    .toList(),
+              ),
+          ],
+        ),
       ),
     );
   }
