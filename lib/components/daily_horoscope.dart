@@ -228,10 +228,11 @@ class _DailyHoroscopeState extends State<DailyHoroscope> {
           const SizedBox(height: 24),
 
           // 幸运数字和颜色
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
+                margin: const EdgeInsets.only(bottom: 8),
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -336,43 +337,45 @@ class _DailyHoroscopeState extends State<DailyHoroscope> {
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // 标题
-          Text(
-            '每日运势',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: Colors.deepPurple,
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // 标题
+            Text(
+              '每日运势',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.deepPurple,
+              ),
             ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            '选择星座查看今日运势',
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.grey.shade600,
+            const SizedBox(height: 8),
+            Text(
+              '选择星座查看今日运势',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey.shade600,
+              ),
             ),
-          ),
-          const SizedBox(height: 24),
+            const SizedBox(height: 24),
 
-          // 星座选择
-          SizedBox(
-            height: 80,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: _zodiacSigns.length,
-              itemBuilder: (context, index) {
-                return _buildZodiacSignItem(_zodiacSigns[index]);
-              },
+            // 星座选择
+            SizedBox(
+              height: 80,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: _zodiacSigns.length,
+                itemBuilder: (context, index) {
+                  return _buildZodiacSignItem(_zodiacSigns[index]);
+                },
+              ),
             ),
-          ),
 
-          // 运势卡片
-          _buildHoroscopeCard(),
-        ],
+            // 运势卡片
+            _buildHoroscopeCard(),
+          ],
+        ),
       ),
     );
   }
