@@ -93,7 +93,8 @@ class _StopwatchTimerState extends State<StopwatchTimer> {
   String _formatTime(Duration duration) {
     final minutes = duration.inMinutes.toString().padLeft(2, '0');
     final seconds = (duration.inSeconds % 60).toString().padLeft(2, '0');
-    final milliseconds = (duration.inMilliseconds % 100).toString().padLeft(2, '0');
+    final milliseconds =
+        (duration.inMilliseconds % 100).toString().padLeft(2, '0');
     return '$minutes:$seconds.$milliseconds';
   }
 
@@ -144,49 +145,68 @@ class _StopwatchTimerState extends State<StopwatchTimer> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              ElevatedButton(
-                onPressed: _isRunning ? _pauseTimer : _startTimer,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: _isRunning ? Colors.orange : Colors.green,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+              Flexible(
+                flex: 1,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  child: ElevatedButton(
+                    onPressed: _isRunning ? _pauseTimer : _startTimer,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor:
+                          _isRunning ? Colors.orange : Colors.green,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: Text(
+                      _isRunning ? '暂停' : '开始',
+                      style: const TextStyle(fontSize: 16),
+                    ),
                   ),
-                ),
-                child: Text(
-                  _isRunning ? '暂停' : '开始',
-                  style: const TextStyle(fontSize: 18),
                 ),
               ),
-              ElevatedButton(
-                onPressed: _recordLap,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+              Flexible(
+                flex: 1,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  child: ElevatedButton(
+                    onPressed: _recordLap,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: const Text(
+                      '计圈',
+                      style: TextStyle(fontSize: 16),
+                    ),
                   ),
-                ),
-                child: const Text(
-                  '计圈',
-                  style: TextStyle(fontSize: 18),
                 ),
               ),
-              ElevatedButton(
-                onPressed: _resetTimer,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+              Flexible(
+                flex: 1,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  child: ElevatedButton(
+                    onPressed: _resetTimer,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: const Text(
+                      '重置',
+                      style: TextStyle(fontSize: 16),
+                    ),
                   ),
-                ),
-                child: const Text(
-                  '重置',
-                  style: TextStyle(fontSize: 18),
                 ),
               ),
             ],
@@ -218,7 +238,8 @@ class _StopwatchTimerState extends State<StopwatchTimer> {
                     itemBuilder: (context, index) {
                       final lapTime = _lapTimes[index];
                       return Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 12),
                         decoration: BoxDecoration(
                           border: Border(
                             bottom: BorderSide(
@@ -230,26 +251,40 @@ class _StopwatchTimerState extends State<StopwatchTimer> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              '第 ${lapTime.index} 圈',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
+                            Flexible(
+                              flex: 1,
+                              child: Text(
+                                '第 ${lapTime.index} 圈',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
-                            Text(
-                              _formatTime(lapTime.time),
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontFamily: 'Courier',
+                            Flexible(
+                              flex: 1,
+                              child: Text(
+                                _formatTime(lapTime.time),
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontFamily: 'Courier',
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.center,
                               ),
                             ),
-                            Text(
-                              _formatTime(lapTime.totalTime),
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontFamily: 'Courier',
-                                color: Colors.grey.shade600,
+                            Flexible(
+                              flex: 1,
+                              child: Text(
+                                _formatTime(lapTime.totalTime),
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontFamily: 'Courier',
+                                  color: Colors.grey.shade600,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.end,
                               ),
                             ),
                           ],
