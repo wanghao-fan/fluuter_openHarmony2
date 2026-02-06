@@ -173,12 +173,16 @@ class _BloodTypePersonalityTestState extends State<BloodTypePersonalityTest> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                '${bloodType.type} 血型性格分析',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: bloodType.color,
+              Flexible(
+                child: Text(
+                  '${bloodType.type} 血型性格分析',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: bloodType.color,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
                 ),
               ),
               Icon(
