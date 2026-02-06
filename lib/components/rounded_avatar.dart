@@ -196,239 +196,242 @@ class AvatarDemo extends StatelessWidget {
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            '圆角头像功能演示',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: Colors.deepPurple,
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '圆角头像功能演示',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.deepPurple,
+              ),
             ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            '点击头像查看交互效果',
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.grey.shade600,
+            const SizedBox(height: 8),
+            Text(
+              '点击头像查看交互效果',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey.shade600,
+              ),
             ),
-          ),
-          const SizedBox(height: 32),
+            const SizedBox(height: 32),
 
-          // 网络图片头像示例
-          Text(
-            '网络图片头像',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.grey.shade700,
+            // 网络图片头像示例
+            Text(
+              '网络图片头像',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey.shade700,
+              ),
             ),
-          ),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              RoundedAvatar(
-                imageUrl: 'https://via.placeholder.com/150',
-                radius: 40,
-                tooltipText: '用户头像1',
-                onTap: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('点击了头像1')),
-                  );
-                },
-              ),
-              RoundedAvatar(
-                imageUrl: 'https://via.placeholder.com/150/FF0000/FFFFFF',
-                radius: 50,
-                borderColor: Colors.red,
-                tooltipText: '用户头像2',
-                onTap: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('点击了头像2')),
-                  );
-                },
-              ),
-              RoundedAvatar(
-                imageUrl: 'https://via.placeholder.com/150/00FF00/FFFFFF',
-                radius: 30,
-                borderColor: Colors.green,
-                tooltipText: '用户头像3',
-                onTap: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('点击了头像3')),
-                  );
-                },
-              ),
-            ],
-          ),
-
-          const SizedBox(height: 40),
-
-          // 本地资源头像示例
-          Text(
-            '本地资源头像',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.grey.shade700,
-            ),
-          ),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              RoundedAvatar(
-                assetPath: 'assets/avatar1.png',
-                radius: 40,
-                tooltipText: '本地头像1',
-                onTap: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('点击了本地头像1')),
-                  );
-                },
-              ),
-              RoundedAvatar(
-                assetPath: 'assets/avatar2.png',
-                radius: 50,
-                borderColor: Colors.blue,
-                tooltipText: '本地头像2',
-                onTap: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('点击了本地头像2')),
-                  );
-                },
-              ),
-              RoundedAvatar(
-                assetPath: 'assets/avatar3.png',
-                radius: 30,
-                borderColor: Colors.purple,
-                tooltipText: '本地头像3',
-                onTap: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('点击了本地头像3')),
-                  );
-                },
-              ),
-            ],
-          ),
-
-          const SizedBox(height: 40),
-
-          // 自定义占位符头像示例
-          Text(
-            '自定义占位符头像',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.grey.shade700,
-            ),
-          ),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              RoundedAvatar(
-                radius: 40,
-                placeholder: Container(
-                  width: 80,
-                  height: 80,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [Colors.blue, Colors.purple],
-                    ),
-                  ),
-                  child: const Center(
-                    child: Icon(
-                      Icons.person,
-                      size: 40,
-                      color: Colors.white,
-                    ),
-                  ),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                RoundedAvatar(
+                  imageUrl: 'https://via.placeholder.com/150',
+                  radius: 40,
+                  tooltipText: '用户头像1',
+                  onTap: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('点击了头像1')),
+                    );
+                  },
                 ),
-                tooltipText: '自定义占位符1',
-                onTap: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('点击了自定义占位符1')),
-                  );
-                },
-              ),
-              RoundedAvatar(
-                radius: 50,
-                placeholder: Container(
-                  width: 100,
-                  height: 100,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [Colors.red, Colors.orange],
-                    ),
-                  ),
-                  child: const Center(
-                    child: Icon(
-                      Icons.account_circle,
-                      size: 50,
-                      color: Colors.white,
-                    ),
-                  ),
+                RoundedAvatar(
+                  imageUrl: 'https://via.placeholder.com/150/FF0000/FFFFFF',
+                  radius: 50,
+                  borderColor: Colors.red,
+                  tooltipText: '用户头像2',
+                  onTap: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('点击了头像2')),
+                    );
+                  },
                 ),
-                tooltipText: '自定义占位符2',
-                onTap: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('点击了自定义占位符2')),
-                  );
-                },
-              ),
-            ],
-          ),
-
-          const SizedBox(height: 40),
-
-          // 无边框头像示例
-          Text(
-            '无边框头像',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.grey.shade700,
+                RoundedAvatar(
+                  imageUrl: 'https://via.placeholder.com/150/00FF00/FFFFFF',
+                  radius: 30,
+                  borderColor: Colors.green,
+                  tooltipText: '用户头像3',
+                  onTap: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('点击了头像3')),
+                    );
+                  },
+                ),
+              ],
             ),
-          ),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              RoundedAvatar(
-                imageUrl: 'https://via.placeholder.com/150/0000FF/FFFFFF',
-                radius: 40,
-                showBorder: false,
-                tooltipText: '无边框头像1',
-                onTap: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('点击了无边框头像1')),
-                  );
-                },
+
+            const SizedBox(height: 40),
+
+            // 本地资源头像示例
+            Text(
+              '本地资源头像',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey.shade700,
               ),
-              RoundedAvatar(
-                imageUrl: 'https://via.placeholder.com/150/FFFF00/000000',
-                radius: 50,
-                showBorder: false,
-                tooltipText: '无边框头像2',
-                onTap: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('点击了无边框头像2')),
-                  );
-                },
+            ),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                RoundedAvatar(
+                  assetPath: 'assets/avatar1.png',
+                  radius: 40,
+                  tooltipText: '本地头像1',
+                  onTap: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('点击了本地头像1')),
+                    );
+                  },
+                ),
+                RoundedAvatar(
+                  assetPath: 'assets/avatar2.png',
+                  radius: 50,
+                  borderColor: Colors.blue,
+                  tooltipText: '本地头像2',
+                  onTap: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('点击了本地头像2')),
+                    );
+                  },
+                ),
+                RoundedAvatar(
+                  assetPath: 'assets/avatar3.png',
+                  radius: 30,
+                  borderColor: Colors.purple,
+                  tooltipText: '本地头像3',
+                  onTap: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('点击了本地头像3')),
+                    );
+                  },
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 40),
+
+            // 自定义占位符头像示例
+            Text(
+              '自定义占位符头像',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey.shade700,
               ),
-            ],
-          ),
-        ],
+            ),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                RoundedAvatar(
+                  radius: 40,
+                  placeholder: Container(
+                    width: 80,
+                    height: 80,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [Colors.blue, Colors.purple],
+                      ),
+                    ),
+                    child: const Center(
+                      child: Icon(
+                        Icons.person,
+                        size: 40,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  tooltipText: '自定义占位符1',
+                  onTap: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('点击了自定义占位符1')),
+                    );
+                  },
+                ),
+                RoundedAvatar(
+                  radius: 50,
+                  placeholder: Container(
+                    width: 100,
+                    height: 100,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [Colors.red, Colors.orange],
+                      ),
+                    ),
+                    child: const Center(
+                      child: Icon(
+                        Icons.account_circle,
+                        size: 50,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  tooltipText: '自定义占位符2',
+                  onTap: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('点击了自定义占位符2')),
+                    );
+                  },
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 40),
+
+            // 无边框头像示例
+            Text(
+              '无边框头像',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey.shade700,
+              ),
+            ),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                RoundedAvatar(
+                  imageUrl: 'https://via.placeholder.com/150/0000FF/FFFFFF',
+                  radius: 40,
+                  showBorder: false,
+                  tooltipText: '无边框头像1',
+                  onTap: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('点击了无边框头像1')),
+                    );
+                  },
+                ),
+                RoundedAvatar(
+                  imageUrl: 'https://via.placeholder.com/150/FFFF00/000000',
+                  radius: 50,
+                  showBorder: false,
+                  tooltipText: '无边框头像2',
+                  onTap: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('点击了无边框头像2')),
+                    );
+                  },
+                ),
+              ],
+            ),
+            const SizedBox(height: 40),
+          ],
+        ),
       ),
     );
   }
