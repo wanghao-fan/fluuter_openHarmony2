@@ -65,7 +65,10 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    _startDataService();
+    // 延迟初始化数据服务，确保Widget树正确构建
+    Future.delayed(const Duration(milliseconds: 100), () {
+      _startDataService();
+    });
   }
 
   @override
@@ -75,19 +78,29 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _startDataService() {
-    _dataService.start();
-    _isDataServiceRunning = true;
-    
-    // 监听数据更新
-    _dataService.dataStream.listen((value) {
-      setState(() {
-        _kLineData.add(value);
-        // 保持数据点数量在合理范围内，最多显示30个数据点
-        if (_kLineData.length > 30) {
-          _kLineData = _kLineData.sublist(_kLineData.length - 30);
+    try {
+      _dataService.start();
+      _isDataServiceRunning = true;
+      
+      // 监听数据更新
+      _dataService.dataStream.listen((value) {
+        try {
+          setState(() {
+            _kLineData.add(value);
+            // 保持数据点数量在合理范围内，最多显示30个数据点
+            if (_kLineData.length > 30) {
+              _kLineData = _kLineData.sublist(_kLineData.length - 30);
+            }
+          });
+        } catch (e) {
+          print('Error updating UI: $e');
         }
+      }, onError: (error) {
+        print('Error in data stream: $error');
       });
-    });
+    } catch (e) {
+      print('Error starting data service: $e');
+    }
   }
 
   void _stopDataService() {
