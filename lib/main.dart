@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'components/three_d_rotation_component.dart';
 
 void main() {
   runApp(const MyApp());
@@ -71,47 +72,70 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            // const Text(
-            //   'You have pushed the button this many times:',
-            // ),
-            // Text(
-            //   '$_counter',
-            //   style: Theme.of(context).textTheme.headlineMedium,
-            // ),
+            const Text(
+              'Flutter for OpenHarmony 实战：3D旋转（透视变换）',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 40),
+            
+            // 3D旋转组件
+            ThreeDRotationComponent(
+              title: '3D旋转效果',
+              subtitle: '点击查看更多',
+              boxColor: Colors.blue,
+              textColor: Colors.white,
+              size: 200.0,
+              animationDuration: 2000,
+              onTap: () {
+                print('点击了3D旋转组件');
+                // 这里可以添加更多交互逻辑
+              },
+            ),
+            
+            const SizedBox(height: 40),
+            
+            // 多个3D旋转组件示例
+            const Text(
+              '不同样式的3D旋转效果',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 20),
+            
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ThreeDRotationComponent(
+                  title: '红色主题',
+                  subtitle: '点击旋转',
+                  boxColor: Colors.red,
+                  textColor: Colors.white,
+                  size: 150.0,
+                  animationDuration: 1500,
+                ),
+                ThreeDRotationComponent(
+                  title: '绿色主题',
+                  subtitle: '点击旋转',
+                  boxColor: Colors.green,
+                  textColor: Colors.white,
+                  size: 150.0,
+                  animationDuration: 1500,
+                ),
+              ],
+            ),
           ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _incrementCounter,
-      //   tooltip: 'Increment',
-      //   child: const Icon(Icons.add),
-      // ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
