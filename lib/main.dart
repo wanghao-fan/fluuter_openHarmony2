@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'components/gantt_chart.dart';
+import 'components/text_typer.dart';
 
 void main() {
   runApp(const MyApp());
@@ -57,28 +57,33 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  int _counter = 0;
+
+  void _incrementCounter() {
+    setState(() {
+      // This call to setState tells the Flutter framework that something has
+      // changed in this State, which causes it to rerun the build method below
+      // so that the display can reflect the updated values. If we changed
+      // _counter without calling setState(), then the build method would not be
+      // called again, and so nothing would appear to happen.
+      _counter++;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Flutter for OpenHarmony 实战'),
+        title: Text(widget.title),
+        backgroundColor: Colors.deepPurple,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            const SizedBox(height: 20),
-            const Text(
-              '甘特图演示',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 20),
-            const GanttChartComponent(),
-            const SizedBox(height: 40),
-          ],
+        child: Center(
+          child: Column(
+            children: <Widget>[
+              const TextTyperComponent(),
+            ],
+          ),
         ),
       ),
     );
