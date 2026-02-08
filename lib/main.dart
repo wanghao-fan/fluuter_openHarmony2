@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'components/kline_chart_component.dart';
+import 'services/data_service.dart';
 
 void main() {
   runApp(const MyApp());
@@ -56,62 +58,138 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  final DataService _dataService = DataService();
+  List<KLineData> _kLineData = [];
+  bool _isDataServiceRunning = false;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+  @override
+  void initState() {
+    super.initState();
+    _startDataService();
+  }
+
+  @override
+  void dispose() {
+    _dataService.stop();
+    super.dispose();
+  }
+
+  void _startDataService() {
+    _dataService.start();
+    _isDataServiceRunning = true;
+    
+    // 监听数据更新
+    _dataService.dataStream.listen((value) {
+      setState(() {
+        _kLineData.add(value);
+        // 保持数据点数量在合理范围内，最多显示30个数据点
+        if (_kLineData.length > 30) {
+          _kLineData = _kLineData.sublist(_kLineData.length - 30);
+        }
+      });
     });
+  }
+
+  void _stopDataService() {
+    _dataService.stop();
+    _isDataServiceRunning = false;
+  }
+
+  void _resetChartData() {
+    setState(() {
+      _kLineData.clear();
+    });
+  }
+
+  void _triggerDataUpdate() {
+    _dataService.triggerDataUpdate();
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            // const Text(
-            //   'You have pushed the button this many times:',
-            // ),
-            // Text(
-            //   '$_counter',
-            //   style: Theme.of(context).textTheme.headlineMedium,
-            // ),
+            const Text(
+              'Flutter for OpenHarmony 实时数据流模拟与图表更新',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 20),
+            
+            // K线图组件
+            KLineChartComponent(
+              data: _kLineData,
+              title: '实时K线图',
+              risingColor: Colors.red,
+              fallingColor: Colors.green,
+              backgroundColor: Colors.white,
+              showGrid: true,
+            ),
+            
+            const SizedBox(height: 20),
+            
+            // 控制按钮
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: _isDataServiceRunning ? _stopDataService : _startDataService,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: _isDataServiceRunning ? Colors.red : Colors.green,
+                  ),
+                  child: Text(_isDataServiceRunning ? '停止数据' : '开始数据'),
+                ),
+                ElevatedButton(
+                  onPressed: _resetChartData,
+                  child: const Text('重置图表'),
+                ),
+                ElevatedButton(
+                  onPressed: _triggerDataUpdate,
+                  child: const Text('手动更新'),
+                ),
+              ],
+            ),
+            
+            const SizedBox(height: 20),
+            
+            // 数据状态信息
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.deepPurple.shade50,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    '数据状态',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 8),
+                  Text('数据服务状态: ${_isDataServiceRunning ? '运行中' : '已停止'}'),
+                  Text('当前数据点: ${_kLineData.length}'),
+                  if (_kLineData.isNotEmpty)
+                    Text('最新收盘价: ${_kLineData.last.close.toStringAsFixed(1)}'),
+                  if (_kLineData.isNotEmpty)
+                    Text('最新开盘价: ${_kLineData.last.open.toStringAsFixed(1)}'),
+                  if (_kLineData.isNotEmpty)
+                    Text('最新最高价: ${_kLineData.last.high.toStringAsFixed(1)}'),
+                  if (_kLineData.isNotEmpty)
+                    Text('最新最低价: ${_kLineData.last.low.toStringAsFixed(1)}'),
+                ],
+              ),
+            ),
           ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _incrementCounter,
-      //   tooltip: 'Increment',
-      //   child: const Icon(Icons.add),
-      // ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
