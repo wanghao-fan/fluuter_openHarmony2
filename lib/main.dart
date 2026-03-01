@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:aa/components/modal.dart';
 
 void main() {
   runApp(const MyApp());
@@ -56,62 +57,278 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  bool _isModalOpen = false;
+  bool _isAlertOpen = false;
+  bool _isConfirmOpen = false;
 
-  void _incrementCounter() {
+  void _openModal() {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      _isModalOpen = true;
+    });
+  }
+
+  void _closeModal() {
+    setState(() {
+      _isModalOpen = false;
+    });
+  }
+
+  void _openAlert() {
+    setState(() {
+      _isAlertOpen = true;
+    });
+  }
+
+  void _closeAlert() {
+    setState(() {
+      _isAlertOpen = false;
+    });
+  }
+
+  void _openConfirm() {
+    setState(() {
+      _isConfirmOpen = true;
+    });
+  }
+
+  void _closeConfirm() {
+    setState(() {
+      _isConfirmOpen = false;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+      appBar: AppBar(
+        title: const Text('Shadcn UI Modal Demo'),
+        backgroundColor: const Color(0xFF1E293B),
+        foregroundColor: Colors.white,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(24.0),
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            // const Text(
-            //   'You have pushed the button this many times:',
-            // ),
-            // Text(
-            //   '$_counter',
-            //   style: Theme.of(context).textTheme.headlineMedium,
-            // ),
+            const Text(
+              'Modal Examples',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.w600,
+                color: Color(0xFF1E293B),
+              ),
+            ),
+            const SizedBox(height: 32),
+            
+            // Modal buttons
+            Wrap(
+              spacing: 12,
+              runSpacing: 12,
+              children: [
+                ElevatedButton(
+                  onPressed: _openModal,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF3B82F6),
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  child: const Text('Open Modal'),
+                ),
+                ElevatedButton(
+                  onPressed: _openAlert,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFEF4444),
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  child: const Text('Open Alert'),
+                ),
+                ElevatedButton(
+                  onPressed: _openConfirm,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFF59E0B),
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  child: const Text('Open Confirm'),
+                ),
+              ],
+            ),
+            
+            // Modals
+            ShadcnModal(
+              isOpen: _isModalOpen,
+              onClose: _closeModal,
+              title: 'Sample Modal',
+              child: const Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    'This is a sample modal dialog',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Color(0xFF475569),
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    'Modals are used to display content that requires user attention or input. They overlay the current page and block interaction until dismissed.',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Color(0xFF64748B),
+                      height: 1.5,
+                    ),
+                  ),
+                ],
+              ),
+              footer: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: _closeModal,
+                    style: TextButton.styleFrom(
+                      foregroundColor: const Color(0xFF64748B),
+                    ),
+                    child: const Text('Cancel'),
+                  ),
+                  const SizedBox(width: 8),
+                  ElevatedButton(
+                    onPressed: _closeModal,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF3B82F6),
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                    ),
+                    child: const Text('OK'),
+                  ),
+                ],
+              ),
+            ),
+            
+            ShadcnModal(
+              isOpen: _isAlertOpen,
+              onClose: _closeAlert,
+              title: 'Alert',
+              child: const Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    'Are you sure you want to delete this item?',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Color(0xFF475569),
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'This action cannot be undone.',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Color(0xFFEF4444),
+                    ),
+                  ),
+                ],
+              ),
+              footer: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: _closeAlert,
+                    style: TextButton.styleFrom(
+                      foregroundColor: const Color(0xFF64748B),
+                    ),
+                    child: const Text('Cancel'),
+                  ),
+                  const SizedBox(width: 8),
+                  ElevatedButton(
+                    onPressed: _closeAlert,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFFEF4444),
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                    ),
+                    child: const Text('Delete'),
+                  ),
+                ],
+              ),
+            ),
+            
+            ShadcnModal(
+              isOpen: _isConfirmOpen,
+              onClose: _closeConfirm,
+              title: 'Confirm Action',
+              child: const Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    'Do you want to save your changes?',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Color(0xFF475569),
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    'If you don\'t save, your changes will be lost.',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Color(0xFF64748B),
+                    ),
+                  ),
+                ],
+              ),
+              footer: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: _closeConfirm,
+                    style: TextButton.styleFrom(
+                      foregroundColor: const Color(0xFFEF4444),
+                    ),
+                    child: const Text('Discard'),
+                  ),
+                  const SizedBox(width: 8),
+                  TextButton(
+                    onPressed: _closeConfirm,
+                    style: TextButton.styleFrom(
+                      foregroundColor: const Color(0xFF64748B),
+                    ),
+                    child: const Text('Cancel'),
+                  ),
+                  const SizedBox(width: 8),
+                  ElevatedButton(
+                    onPressed: _closeConfirm,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF10B981),
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                    ),
+                    child: const Text('Save'),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _incrementCounter,
-      //   tooltip: 'Increment',
-      //   child: const Icon(Icons.add),
-      // ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
