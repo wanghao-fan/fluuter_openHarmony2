@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:aa/components/toast.dart';
 
 void main() {
   runApp(const MyApp());
@@ -71,47 +72,85 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Shadcn UI Toast Demo'),
+        backgroundColor: const Color(0xFF1E293B),
+        foregroundColor: Colors.white,
+      ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            // const Text(
-            //   'You have pushed the button this many times:',
-            // ),
-            // Text(
-            //   '$_counter',
-            //   style: Theme.of(context).textTheme.headlineMedium,
-            // ),
+            const Text(
+              'Click buttons to show different toasts',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            const SizedBox(height: 32),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _buildToastButton(
+                  context,
+                  'Success',
+                  ToastType.success,
+                  const Color(0xFF10B981),
+                ),
+                const SizedBox(width: 16),
+                _buildToastButton(
+                  context,
+                  'Error',
+                  ToastType.error,
+                  const Color(0xFFEF4444),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _buildToastButton(
+                  context,
+                  'Warning',
+                  ToastType.warning,
+                  const Color(0xFFF59E0B),
+                ),
+                const SizedBox(width: 16),
+                _buildToastButton(
+                  context,
+                  'Info',
+                  ToastType.info,
+                  const Color(0xFF3B82F6),
+                ),
+              ],
+            ),
           ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _incrementCounter,
-      //   tooltip: 'Increment',
-      //   child: const Icon(Icons.add),
-      // ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+
+  Widget _buildToastButton(BuildContext context, String label, ToastType type, Color color) {
+    return ElevatedButton(
+      onPressed: () {
+        ToastService.show(
+          context,
+          'This is a $label toast message',
+          type: type,
+        );
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: color,
+        foregroundColor: Colors.white,
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
+      child: Text(label),
     );
   }
 }
