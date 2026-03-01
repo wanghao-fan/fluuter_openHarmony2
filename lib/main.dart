@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:aa/components/slider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -56,62 +57,148 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  double _volumeValue = 50.0;
+  double _brightnessValue = 70.0;
+  double _temperatureValue = 22.0;
 
-  void _incrementCounter() {
+  void _handleVolumeChange(double value) {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      _volumeValue = value;
+    });
+  }
+
+  void _handleBrightnessChange(double value) {
+    setState(() {
+      _brightnessValue = value;
+    });
+  }
+
+  void _handleTemperatureChange(double value) {
+    setState(() {
+      _temperatureValue = value;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+      appBar: AppBar(
+        title: const Text('Shadcn UI Slider Demo'),
+        backgroundColor: const Color(0xFF1E293B),
+        foregroundColor: Colors.white,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(24.0),
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            // const Text(
-            //   'You have pushed the button this many times:',
-            // ),
-            // Text(
-            //   '$_counter',
-            //   style: Theme.of(context).textTheme.headlineMedium,
-            // ),
+            const Text(
+              'Adjust Settings',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.w600,
+                color: Color(0xFF1E293B),
+              ),
+            ),
+            const SizedBox(height: 32),
+            ShadcnSlider(
+              value: _volumeValue,
+              min: 0.0,
+              max: 100.0,
+              divisions: 100,
+              onChanged: _handleVolumeChange,
+              label: 'Volume',
+              activeColor: const Color(0xFF3B82F6),
+            ),
+            const SizedBox(height: 24),
+            ShadcnSlider(
+              value: _brightnessValue,
+              min: 0.0,
+              max: 100.0,
+              divisions: 100,
+              onChanged: _handleBrightnessChange,
+              label: 'Brightness',
+              activeColor: const Color(0xFFF59E0B),
+            ),
+            const SizedBox(height: 24),
+            ShadcnSlider(
+              value: _temperatureValue,
+              min: 16.0,
+              max: 30.0,
+              divisions: 14,
+              onChanged: _handleTemperatureChange,
+              label: 'Temperature (°C)',
+              activeColor: const Color(0xFFEF4444),
+            ),
+            const SizedBox(height: 48),
+            Card(
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+                side: const BorderSide(
+                  color: Color(0xFFE2E8F0),
+                  width: 1,
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Current Settings',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xFF475569),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Volume:'),
+                        Text(
+                          '${_volumeValue.toStringAsFixed(0)}%',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Brightness:'),
+                        Text(
+                          '${_brightnessValue.toStringAsFixed(0)}%',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Temperature:'),
+                        Text(
+                          '${_temperatureValue.toStringAsFixed(0)}°C',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _incrementCounter,
-      //   tooltip: 'Increment',
-      //   child: const Icon(Icons.add),
-      // ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
